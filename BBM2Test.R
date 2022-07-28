@@ -88,23 +88,19 @@ BBM2roundscombineddfv2<-BBM2dsv4%>%
   arrange(overall_pick_number,.by_group=TRUE)%>%
   mutate(
     week1posrank=rank(-week1scoring,na.last=TRUE,ties.method="first"))
+#Create flex option to identify players to potentially compare for flex output
 BBM2roundscombineddfv2<-BBM2roundscombineddfv2%>%
   mutate(
     flex_optionW1=
       if_else((position=="RB"&week1posrank==3)|(position=="WR"&week1posrank==4)|
                 (position=="TE"&week1posrank==2),1,0))
+#Create a column that shows if a player scored or not, and how many points they scored if so
 teamweeklyscoringtest<-BBM2roundscombineddfv2%>%
   group_by(tournament_entry_id)%>%
   mutate(
     points_scoredW1=
       if_else((position=="QB"&week1posrank==1)|(position=="TE"&week1posrank==1)|
                 (position=="RB"&week1posrank<3)|(position=="WR"&week1posrank<4),
-              week1scoring,0))%>%
-  tibble()
+              week1scoring,0))
 
-    
-
-
-
-
-
+tibble(teamweeklyscoringtest)
